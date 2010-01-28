@@ -1,12 +1,14 @@
 <!DOCTYPE html> 
 <title>Bubblemaker</title> 
-<style>body{margin:0}form{position:absolute;bottom:3em;right:3em}</style> 
+<style>body{margin:0}form{position:absolute;bottom:3em;right:3em}input{width:4em}</style> 
 <script> 
 window.onload = function()
 {
 	var canvas = document.getElementById('canvas');
 	var percent = document.config.percent
 	var size = document.config.size
+	var fg = document.config.fg
+	var bg = document.config.bg
  
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -16,46 +18,54 @@ window.onload = function()
 		drawCircles(ctx);
 	}
  
+  document.config.onsubmit = function() { return false; }
+	percent.onkeyup = function() { drawCircles(ctx); }
+	size.onkeyup = function() { drawCircles(ctx); }
+	bg.onkeyup = function() { document.body.style.background = bg.value; }
+	fg.onkeyup = function() 
+	{	
+		ctx.fillStyle = fg.value;
+		ctx.strokeStyle = fg.value;
+		drawCircles(ctx);
+	}
 	
-	percent.onkeyup = function()
-	{
-		drawCircles(ctx);
-	}
- 
- 
-	size.onkeyup = function()
-	{
- 
-		drawCircles(ctx);
-	}
 }
  
 function drawCircles(ctx)
 {
-	ctx.clearRect(0,0,canvas.width,canvas.height);
+	ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+	percentCircles(ctx, document.config.size.value, document.config.percent.value/100, window.innerWidth/2, window.innerHeight/2);
+}
  
+function percentCircles(ctx, size, pct, x, y)
+{
 	ctx.globalAlpha = 1;
  
 	ctx.beginPath(); 
-	ctx.arc(canvas.width/2, canvas.height/2, document.config.size.value, 0, 2*Math.PI, true);
+	ctx.arc(x, y, size, 0, 2*Math.PI, true);
 	ctx.stroke();
  
 	ctx.globalAlpha = 0.5;
  
 	ctx.beginPath(); 
-	ctx.arc(canvas.width/2, canvas.height/2, document.config.percent.value/100*document.config.size.value, 0, 2*Math.PI,true);
+	ctx.arc(x, y, pct*size, 0, 2*Math.PI,true);
 	ctx.fill();
+	ctx.globalAlpha = 0.25;
+ 
+	ctx.font = size/3 + 'px sans-serif';
+	ctx.textAlign = 'left';
+	ctx.textBaseline = 'middle';
+	ctx.fillText(Math.round(pct*10000)/100+'%', x+size*1.1, y);
 }
  
  
 </script> 
 <canvas id="canvas"></canvas> 
 <form name="config"> 
-<label> 
-  <input type="text" name="percent" value="50">%
-</label> 
+<label><input type="text" name="percent" value="50">%</label> 
 of
-<label> 
-  <input type="text" name="size" value="100">px
-</label> 
+<label><input type="text" name="size" value="100">px</label> 
+<br> 
+<label>bg: <input type="text" name="bg" value="#ffffff"></label> 
+<label>fg: <input type="text" name="fg" value="#000000"></label> 
 </form> 
