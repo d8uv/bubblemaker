@@ -2,73 +2,95 @@
 <title>Bubblemaker</title> 
 <style>body{margin:0}form{position:absolute;bottom:3em;right:3em}input{width:4em}</style> 
 <script> 
-"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document*/
-function percentCircles(ctx, size, pct, x, y) {
-    ctx.globalAlpha = 1;
+window.onload = function()
+{
+	var canvas = document.getElementById('canvas');
  
-    ctx.beginPath(); 
-    ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-    ctx.stroke();
+	canvas.width = window.innerWidth-18;
+	canvas.height = window.innerHeight-5;
  
-    ctx.globalAlpha = 0.5;
- 
-    ctx.beginPath(); 
-    ctx.arc(x, y, pct * size, 0, 2 * Math.PI, true);
-    ctx.fill();
-    ctx.globalAlpha = 0.25;
- 
-    ctx.font = size / 3 + 'px sans-serif';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(Math.round(pct * 10000) / 100 + '%', x + size * 1.1, y);
+	if (canvas.getContext){
+		var ctx = canvas.getContext('2d');
+		drawBox(ctx);
+		drawCircles(ctx);
+	}
 }
  
-function drawCircles(ctx) {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    percentCircles(ctx, document.config.size.value, document.config.percent.value / 100, window.innerWidth / 2, window.innerHeight / 2);
+function drawBox(ctx)
+{
+	var score = 818;
+ 
+	percentBox(ctx, score/1000, canvas.width/2, 10, canvas.width/8, canvas.height-20);	
+	percentLine(ctx, score/1000, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, score);
+	percentLine(ctx, 1, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, "1000");
+	percentLine(ctx, 825/1000, (4 * canvas.width) / 8, 10, canvas.width/7, canvas.height-20, "825");
+	percentLine(ctx, 0, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, "300");
 }
  
-window.onload = function () {
-    var canvas, ctx, percent, size, fg, bg;
-    canvas = document.getElementById('canvas');
-    percent = document.config.percent;
-    size = document.config.size;
-    fg = document.config.fg;
-    bg = document.config.bg;
+function drawCircles(ctx)
+{
+	var size = canvas.height/17;
+	var x = canvas.width/3;
  
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+	function spot(pos)
+	{
+		return size * (2 * pos + 1) + (pos + 1) * 6;
+	}
  
-    if (canvas.getContext) {
-        ctx = canvas.getContext('2d');
-        drawCircles(ctx);
-    }
+	percentCircles(ctx, size, .71, x, spot(0), "The Basics");
+	percentCircles(ctx, size, .41, x, spot(1), "VLANs");
+	percentCircles(ctx, size, 1.0, x, spot(2), "IP");
+	percentCircles(ctx, size, .76, x, spot(3), "Routing");
+	percentCircles(ctx, size, 1.0, x, spot(4), "WLANs");
+	percentCircles(ctx, size, 1.0, x, spot(5), "Security");
+	percentCircles(ctx, size, 1.0, x, spot(6), "NAT/ACL");
+	percentCircles(ctx, size, .75, x, spot(7), "WAN");
+}
  
-    document.config.onsubmit = function () { 
-        return false; 
-    };
-    percent.onkeyup = function () {
-        drawCircles(ctx);
-    };
-    size.onkeyup = function () {
-        drawCircles(ctx);
-    };
-    bg.onkeyup = function () { 
-        document.body.style.background = bg.value;
-    };
-    fg.onkeyup = function () {    
-        ctx.fillStyle = fg.value;
-        ctx.strokeStyle = fg.value;
-        drawCircles(ctx);
-    };
-};
+function percentBox(ctx, pct, x, y, w, h)
+{
+	ctx.globalAlpha = 1;
+	ctx.strokeRect(x, y, w, h);
+	ctx.globalAlpha = .5;
+	ctx.fillRect(x, y-h*(pct - 1), w, h*pct);
+}
+ 
+function percentLine(ctx, pct, x, y, w, h, text)
+{
+	ctx.globalAlpha = .25;
+	ctx.beginPath();
+	ctx.moveTo(x, y-h*(pct - 1));
+	ctx.lineTo(w+x, y-h*(pct - 1));
+	ctx.stroke();
+	ctx.closePath();
+ 
+	ctx.font = w/8 + 'px sans-serif';
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'left';
+	ctx.fillText(text, w+x, y-h*(pct - 1));
+}
+ 
+function percentCircles(ctx, size, pct, x, y, text)
+{
+	ctx.globalAlpha = 1;
+	ctx.beginPath(); 
+	ctx.arc(x, y, size, 0, 2*Math.PI, true);
+	ctx.stroke();
+ 
+	ctx.globalAlpha = 0.5;
+	ctx.beginPath(); 
+	ctx.arc(x, y, pct*size, 0, 2*Math.PI,true);
+	ctx.fill();
+ 
+	ctx.globalAlpha = 0.25;
+	ctx.font = size/3 + 'px sans-serif';
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'left';
+	ctx.fillText(Math.round(pct*10000)/100+'%', x+size*1.1, y);
+	ctx.textAlign = 'right';
+	ctx.fillText(text, x-size*1.1, y);
+}
+ 
+ 
 </script> 
-<canvas id="canvas"></canvas> 
-<form name="config"> 
-<label><input type="text" name="percent" value="50">%</label> 
-of
-<label><input type="text" name="size" value="100">px</label> 
-<br> 
-<label>bg: <input type="text" name="bg" value="#ffffff"></label> 
-<label>fg: <input type="text" name="fg" value="#000000"></label> 
-</form> 
+<canvas id="canvas"></canvas>
