@@ -1,96 +1,94 @@
 <!DOCTYPE html> 
-<title>Bubblemaker</title> 
-<style>body{margin:0}form{position:absolute;bottom:3em;right:3em}input{width:4em}</style> 
+<title>Cody sucks at the CCNA</title> 
+<style>body{margin:0}</style> 
 <script> 
-window.onload = function()
-{
-	var canvas = document.getElementById('canvas');
- 
-	canvas.width = window.innerWidth-18;
-	canvas.height = window.innerHeight-5;
- 
-	if (canvas.getContext){
-		var ctx = canvas.getContext('2d');
-		drawBox(ctx);
-		drawCircles(ctx);
-	}
-}
- 
-function drawBox(ctx)
-{
-	var score = 818;
- 
-	percentBox(ctx, score/1000, canvas.width/2, 10, canvas.width/8, canvas.height-20);	
-	percentLine(ctx, score/1000, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, score);
-	percentLine(ctx, 1, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, "1000");
-	percentLine(ctx, 825/1000, (4 * canvas.width) / 8, 10, canvas.width/7, canvas.height-20, "825");
-	percentLine(ctx, 0, (5 * canvas.width) / 8, 10, canvas.width/10, canvas.height-20, "300");
-}
- 
-function drawCircles(ctx)
-{
-	var size = canvas.height/17;
-	var x = canvas.width/3;
- 
-	function spot(pos)
-	{
-		return size * (2 * pos + 1) + (pos + 1) * 6;
-	}
- 
-	percentCircles(ctx, size, .71, x, spot(0), "The Basics");
-	percentCircles(ctx, size, .41, x, spot(1), "VLANs");
-	percentCircles(ctx, size, 1.0, x, spot(2), "IP");
-	percentCircles(ctx, size, .76, x, spot(3), "Routing");
-	percentCircles(ctx, size, 1.0, x, spot(4), "WLANs");
-	percentCircles(ctx, size, 1.0, x, spot(5), "Security");
-	percentCircles(ctx, size, 1.0, x, spot(6), "NAT/ACL");
-	percentCircles(ctx, size, .75, x, spot(7), "WAN");
-}
- 
+"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document*/
 function percentBox(ctx, pct, x, y, w, h)
 {
-	ctx.globalAlpha = 1;
-	ctx.strokeRect(x, y, w, h);
-	ctx.globalAlpha = .5;
-	ctx.fillRect(x, y-h*(pct - 1), w, h*pct);
+    ctx.globalAlpha = 1;
+    ctx.strokeRect(x, y, w, h);
+    ctx.globalAlpha = 0.5;
+    ctx.fillRect(x, y - h * (pct - 1), w, h * pct);
 }
  
-function percentLine(ctx, pct, x, y, w, h, text)
-{
-	ctx.globalAlpha = .25;
-	ctx.beginPath();
-	ctx.moveTo(x, y-h*(pct - 1));
-	ctx.lineTo(w+x, y-h*(pct - 1));
-	ctx.stroke();
-	ctx.closePath();
+function percentLine(ctx, pct, x, y, w, h, text) {
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath();
+    ctx.moveTo(x, y - h * (pct - 1));
+    ctx.lineTo(w + x,  y - h * (pct - 1));
+    ctx.stroke();
+    ctx.closePath();
  
-	ctx.font = w/8 + 'px sans-serif';
-	ctx.textBaseline = 'middle';
-	ctx.textAlign = 'left';
-	ctx.fillText(text, w+x, y-h*(pct - 1));
+    ctx.font = w / 8 + 'px sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillText(text, w + x, y - h * (pct - 1));
 }
  
-function percentCircles(ctx, size, pct, x, y, text)
-{
-	ctx.globalAlpha = 1;
-	ctx.beginPath(); 
-	ctx.arc(x, y, size, 0, 2*Math.PI, true);
-	ctx.stroke();
+function percentCircles(ctx, size, pct, x, y, text) {
+    ctx.globalAlpha = 1;
  
-	ctx.globalAlpha = 0.5;
-	ctx.beginPath(); 
-	ctx.arc(x, y, pct*size, 0, 2*Math.PI,true);
-	ctx.fill();
+    ctx.beginPath(); 
+    ctx.arc(x, y, size, 0, 2 * Math.PI, true);
+    ctx.stroke();
  
-	ctx.globalAlpha = 0.25;
-	ctx.font = size/3 + 'px sans-serif';
-	ctx.textBaseline = 'middle';
-	ctx.textAlign = 'left';
-	ctx.fillText(Math.round(pct*10000)/100+'%', x+size*1.1, y);
-	ctx.textAlign = 'right';
-	ctx.fillText(text, x-size*1.1, y);
+    ctx.globalAlpha = 0.5;
+ 
+    ctx.beginPath(); 
+    ctx.arc(x, y, pct * size, 0, 2 * Math.PI, true);
+    ctx.fill();
+    ctx.globalAlpha = 0.25;
+ 
+    ctx.globalAlpha = 0.25;
+    ctx.font = size / 3 + 'px sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillText(Math.round(pct * 10000) / 100 + '%', x + size * 1.1, y);
+    ctx.textAlign = 'right';
+    ctx.fillText(text, x - size * 1.1, y);
 }
  
+function drawBox(ctx) {
+    var score = 818;
  
+    percentBox(ctx, score / 1000, ctx.canvas.width / 2, 10, ctx.canvas.width / 8, ctx.canvas.height - 20);    
+    percentLine(ctx, score / 1000, (5 * ctx.canvas.width) / 8, 10, ctx.canvas.width / 10, ctx.canvas.height - 20, score);
+    percentLine(ctx, 1, (5 * ctx.canvas.width) / 8, 10, ctx.canvas.width / 10, ctx.canvas.height - 20, "1000");
+    percentLine(ctx, 825 / 1000, (4 * ctx.canvas.width) / 8, 10, ctx.canvas.width / 7, ctx.canvas.height - 20, "825");
+    percentLine(ctx, 0, (5 * ctx.canvas.width) / 8, 10, ctx.canvas.width / 10, ctx.canvas.height - 20, "300");
+}
+ 
+function drawCircles(ctx) {
+    var size, x;
+    size = ctx.canvas.height / 17;
+    x = ctx.canvas.width / 3;
+ 
+    function spot(pos) {
+        return size * (2 * pos + 1) + (pos + 1) * 6;
+    }
+ 
+    percentCircles(ctx, size, 0.71, x, spot(0), "The Basics");
+    percentCircles(ctx, size, 0.41, x, spot(1), "VLANs");
+    percentCircles(ctx, size, 1.00, x, spot(2), "IP");
+    percentCircles(ctx, size, 0.76, x, spot(3), "Routing");
+    percentCircles(ctx, size, 1.00, x, spot(4), "WLANs");
+    percentCircles(ctx, size, 1.00, x, spot(5), "Security");
+    percentCircles(ctx, size, 1.00, x, spot(6), "NAT/ACL");
+    percentCircles(ctx, size, 0.75, x, spot(7), "WAN");
+}
+
+window.onload = function () {
+    var canvas, ctx;
+    canvas = document.getElementById('canvas');
+ 
+    canvas.width = window.innerWidth - 18;
+    canvas.height = window.innerHeight - 5;
+ 
+    if (canvas.getContext) {
+        ctx = canvas.getContext('2d');
+        drawBox(ctx);
+        drawCircles(ctx);
+    }
+};
 </script> 
 <canvas id="canvas"></canvas>
