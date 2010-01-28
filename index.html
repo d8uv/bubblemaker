@@ -8,14 +8,16 @@ window.onload = function () {
     var paper = new Raphael("canvas");
     
     function drawCircles() {
-        var outCircle, inCircle;
+        var outCircle, inCircle, text;
         paper.clear();
         
         outCircle = paper.circle(paper.width / 2, paper.height / 2, (document.config.size.value / 2));
         inCircle = paper.circle(paper.width / 2, paper.height / 2, (document.config.size.value * document.config.percent.value) / 200);
+        text = paper.text(paper.width / 2 + document.config.size.value * .8, paper.height / 2, Math.round(document.config.percent.value) + "%");
         
         outCircle.attr({stroke: document.config.fg.value});
         inCircle.attr({opacity: 0.5, fill: document.config.fg.value, stroke: "none"});
+        text.attr({fill: document.config.fg.value, opacity: 0.25, "font-size": document.config.size.value / 4});
     }
     
     drawCircles();
