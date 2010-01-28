@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<title>Bubblemaker</title> 
+<style>body{margin:0}form{position:absolute;bottom:3em;right:3em}</style> 
+<script> 
+window.onload = function()
+{
+	var canvas = document.getElementById('canvas');
+	var percent = document.config.percent
+	var size = document.config.size
+ 
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+ 
+	if (canvas.getContext){
+		var ctx = canvas.getContext('2d');
+		drawCircles(ctx);
+	}
+ 
+	
+	percent.onkeyup = function()
+	{
+		drawCircles(ctx);
+	}
+ 
+ 
+	size.onkeyup = function()
+	{
+ 
+		drawCircles(ctx);
+	}
+}
+ 
+function drawCircles(ctx)
+{
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+ 
+	ctx.globalAlpha = 1;
+ 
+	ctx.beginPath(); 
+	ctx.arc(canvas.width/2, canvas.height/2, document.config.size.value, 0, 2*Math.PI, true);
+	ctx.stroke();
+ 
+	ctx.globalAlpha = 0.5;
+ 
+	ctx.beginPath(); 
+	ctx.arc(canvas.width/2, canvas.height/2, document.config.percent.value/100*document.config.size.value, 0, 2*Math.PI,true);
+	ctx.fill();
+}
+ 
+ 
+</script> 
+<canvas id="canvas"></canvas> 
+<form name="config"> 
+<label> 
+  <input type="text" name="percent" value="50">%
+</label> 
+of
+<label> 
+  <input type="text" name="size" value="100">px
+</label> 
+</form> 
