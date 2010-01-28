@@ -1,10 +1,16 @@
 <!DOCTYPE html> 
-<title>Bubblemaker</title> 
-<style>body{margin:0}form{position:absolute;bottom:3em;right:3em}input{width:4em}</style> 
-<script> 
-"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document*/
-function percentCircles(ctx, size, pct, x, y) {
-    ctx.globalAlpha = 1;
+<title>Bubblemaker v2!</title> 
+<style>html,body,#canvas{margin:0;width:99.8%;height:99.8%}form{position:absolute;bottom:3em;right:3em}input{width:4em}</style>
+<script src="raphael-min.js"></script>
+<script>
+"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document Raphael*/
+function percentCircles(canvas, size, pct, x, y) {
+    var outCircle, inCircle, text;
+
+    outCircle = canvas.circle(x, y, (size / 2));
+    inCircle = canvas.circle(x, y, (size / 2) * pct);
+
+/*    ctx.globalAlpha = 1;
  
     ctx.beginPath(); 
     ctx.arc(x, y, size, 0, 2 * Math.PI, true);
@@ -20,50 +26,37 @@ function percentCircles(ctx, size, pct, x, y) {
     ctx.font = size / 3 + 'px sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(Math.round(pct * 10000) / 100 + '%', x + size * 1.1, y);
+    ctx.fillText(Math.round(pct * 10000) / 100 + '%', x + size * 1.1, y); */
 }
- 
-function drawCircles(ctx) {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    percentCircles(ctx, document.config.size.value, document.config.percent.value / 100, window.innerWidth / 2, window.innerHeight / 2);
-}
- 
+
 window.onload = function () {
-    var canvas, ctx, percent, size, fg, bg;
-    canvas = document.getElementById('canvas');
-    percent = document.config.percent;
-    size = document.config.size;
-    fg = document.config.fg;
-    bg = document.config.bg;
- 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
- 
-    if (canvas.getContext) {
-        ctx = canvas.getContext('2d');
-        drawCircles(ctx);
+    var form = document.config;
+    
+    function drawCircles() {
+        var paper = new Raphael("canvas");
+        percentCircles(paper, form.size.value, form.percent.value / 100, paper.width / 2, paper.height / 2);
     }
- 
-    document.config.onsubmit = function () { 
+    
+    drawCircles();
+    
+    form.onsubmit = function () { 
         return false; 
     };
-    percent.onkeyup = function () {
-        drawCircles(ctx);
+    form.percent.onkeyup = function () {
+        drawCircles();
     };
-    size.onkeyup = function () {
-        drawCircles(ctx);
+    form.size.onkeyup = function () {
+        drawCircles();
     };
-    bg.onkeyup = function () { 
-        document.body.style.background = bg.value;
+    form.bg.onkeyup = function () { 
+        document.body.style.background = form.bg.value;
     };
-    fg.onkeyup = function () {    
-        ctx.fillStyle = fg.value;
-        ctx.strokeStyle = fg.value;
-        drawCircles(ctx);
+    form.fg.onkeyup = function () {
+        drawCircles();
     };
 };
 </script> 
-<canvas id="canvas"></canvas> 
+<div id="canvas"></div>
 <form name="config"> 
 <label><input type="text" name="percent" value="50">%</label> 
 of
