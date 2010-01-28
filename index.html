@@ -4,55 +4,30 @@
 <script src="raphael-min.js"></script>
 <script>
 "use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document Raphael*/
-function percentCircles(canvas, size, pct, x, y) {
-    var outCircle, inCircle, text;
-
-    outCircle = canvas.circle(x, y, (size / 2));
-    inCircle = canvas.circle(x, y, (size / 2) * pct);
-
-/*    ctx.globalAlpha = 1;
- 
-    ctx.beginPath(); 
-    ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-    ctx.stroke();
- 
-    ctx.globalAlpha = 0.5;
- 
-    ctx.beginPath(); 
-    ctx.arc(x, y, pct * size, 0, 2 * Math.PI, true);
-    ctx.fill();
-    ctx.globalAlpha = 0.25;
- 
-    ctx.font = size / 3 + 'px sans-serif';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(Math.round(pct * 10000) / 100 + '%', x + size * 1.1, y); */
-}
-
 window.onload = function () {
-    var form = document.config;
+    var paper = new Raphael("canvas");
     
     function drawCircles() {
-        var paper = new Raphael("canvas");
-        percentCircles(paper, form.size.value, form.percent.value / 100, paper.width / 2, paper.height / 2);
+        var outCircle, inCircle;
+        paper.clear();
+        
+        outCircle = paper.circle(paper.width / 2, paper.height / 2, (document.config.size.value / 2));
+        inCircle = paper.circle(paper.width / 2, paper.height / 2, (document.config.size.value * document.config.percent.value) / 200);
+        
+        outCircle.attr({stroke: document.config.fg.value});
+        inCircle.attr({opacity: 0.5, fill: document.config.fg.value, stroke: "none"});
     }
     
     drawCircles();
     
-    form.onsubmit = function () { 
+    document.config.percent.onkeyup = drawCircles;
+    document.config.size.onkeyup = drawCircles;
+    document.config.fg.onkeyup = drawCircles;
+    document.config.bg.onkeyup = function () { 
+        document.body.style.background = document.config.bg.value;
+    };
+    document.config.onsubmit = function () { 
         return false; 
-    };
-    form.percent.onkeyup = function () {
-        drawCircles();
-    };
-    form.size.onkeyup = function () {
-        drawCircles();
-    };
-    form.bg.onkeyup = function () { 
-        document.body.style.background = form.bg.value;
-    };
-    form.fg.onkeyup = function () {
-        drawCircles();
     };
 };
 </script> 
