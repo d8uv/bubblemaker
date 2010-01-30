@@ -1,20 +1,33 @@
-"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global window document Raphael*/
+"use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global document*/
 window.onload = function () {
-    var paper = new Raphael("canvas");
+    var ctx = document.getElementById('canvas').getContext('2d');
     
     function drawCircles() {
-        var outCircle, inCircle, text;
-        paper.clear();
+        //clear canvas/setup colors
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         document.body.style.background = document.config.bg.value;
         document.body.style.color = document.config.fg.value;
+        ctx.fillStyle = document.config.fg.value;
+        ctx.strokeStyle = document.config.fg.value;
         
-        outCircle = paper.circle(document.body.clientWidth / 2, document.body.clientHeight / 2, (document.config.size.value / 2));
-        inCircle = paper.circle(document.body.clientWidth / 2, document.body.clientHeight / 2, (document.config.size.value * document.config.percent.value) / 200);
-        text = paper.text(document.body.clientWidth / 2 + document.config.size.value * 0.8, document.body.clientHeight / 2, Math.round(document.config.percent.value) + "%");
+        //outercircle
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(document.body.clientWidth / 2, document.body.clientHeight / 2, document.config.size.value / 2, 0, 2 * Math.PI, true);
+        ctx.stroke();
         
-        outCircle.attr({stroke: document.config.fg.value});
-        inCircle.attr({opacity: 0.5, fill: document.config.fg.value, stroke: "none"});
-        text.attr({fill: document.config.fg.value, opacity: 0.25, "font-size": document.config.size.value / 4});
+        //inner circle
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath(); 
+        ctx.arc(document.body.clientWidth / 2, document.body.clientHeight / 2, (document.config.size.value * document.config.percent.value) / 200, 0, 2 * Math.PI, true);
+        ctx.fill();
+        
+        //text
+        ctx.globalAlpha = 0.25;
+        ctx.font = document.config.size.value / 3 + 'px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(Math.round(document.config.percent.value) + "%", document.body.clientWidth / 2 + document.config.size.value * 1.1, document.body.clientHeight / 2);
     }
     
     drawCircles();
