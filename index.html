@@ -49,7 +49,7 @@ function percentCircles(ctx, size, pct, x, y, text) {
 }
  
 function drawBox(ctx) {
-    var score = 796;
+    var score = 847;
  
     percentBox(ctx, score / 1000, ctx.canvas.width / 2, 10, ctx.canvas.width / 8, ctx.canvas.height - 20);    
     percentLine(ctx, score / 1000, (5 * ctx.canvas.width) / 8, 10, ctx.canvas.width / 10, ctx.canvas.height - 20, score);
@@ -67,14 +67,14 @@ function drawCircles(ctx) {
         return size * (2 * pos + 1) + (pos + 1) * 6;
     }
  
-    percentCircles(ctx, size, 0.50, x, spot(0), "The Basics");
-    percentCircles(ctx, size, 0.71, x, spot(1), "VLANs");
+    percentCircles(ctx, size, 1.00, x, spot(0), "The Basics");
+    percentCircles(ctx, size, 0.64, x, spot(1), "VLANs");
     percentCircles(ctx, size, 0.67, x, spot(2), "IP");
-    percentCircles(ctx, size, 0.71, x, spot(3), "Routing");
-    percentCircles(ctx, size, 1.00, x, spot(4), "WLANs");
+    percentCircles(ctx, size, 0.79, x, spot(3), "Routing");
+    percentCircles(ctx, size, 0.67, x, spot(4), "WLANs");
     percentCircles(ctx, size, 1.00, x, spot(5), "Security");
     percentCircles(ctx, size, 1.00, x, spot(6), "NAT/ACL");
-    percentCircles(ctx, size, 0.33, x, spot(7), "WAN");
+    percentCircles(ctx, size, 0.67, x, spot(7), "WAN");
 }
 
 window.onload = function () {
