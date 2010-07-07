@@ -1,7 +1,8 @@
 "use strict"; /*jslint white: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true*/ /*global document window*/
 window.onload = function () {
- 
+
     function drawCircles() {
+
         //setup canvas
         var ctx = document.getElementById('canvas').getContext('2d');
         ctx.canvas.width = document.body.clientWidth;
@@ -10,6 +11,7 @@ window.onload = function () {
         document.body.style.color = document.config.fg.value;
         ctx.fillStyle = document.config.fg.value;
         ctx.strokeStyle = document.config.fg.value;
+        ctx.clearRect(0, 0, document.body.clientWidth, document.body.clientHeight);
         
         //outercircle
         ctx.globalAlpha = 1;
